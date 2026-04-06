@@ -186,7 +186,7 @@ processBtn.addEventListener("click", async () => {
 
   // Reset all cards to "waiting"
   selectedFiles.forEach((f) => {
-    const card = document.getElementById(`card-${CSS.escape(f.name)}`);
+    const card = document.getElementById(`card-f-${CSS.escape(f.name)}`);
     if (card) {
       const rightBox = card.querySelector(".photo-card__previews").children[1];
       rightBox.innerHTML = `<span>المعالجة</span><div class="preview-placeholder">⏳</div>`;
