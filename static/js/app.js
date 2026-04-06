@@ -118,7 +118,7 @@ clearBtn.addEventListener("click", clearAll);
 function buildCard(file) {
   const card = document.createElement("div");
   card.className = "photo-card";
-  card.id = `card-${CSS.escape(file.name)}`;
+  card.id = `card-f-${CSS.escape(file.name)}`;
 
   card.innerHTML = `
     <div class="photo-card__header" title="${escHtml(file.name)}">${escHtml(file.name)}</div>
@@ -146,7 +146,7 @@ function buildCard(file) {
 }
 
 function updateCard(filename, result) {
-  const card = document.getElementById(`card-${CSS.escape(filename)}`);
+  const card = document.getElementById(`card-f-${CSS.escape(filename)}`);
   if (!card) return;
 
   const previews   = card.querySelector(".photo-card__previews");
@@ -155,8 +155,12 @@ function updateCard(filename, result) {
 
   if (result.success) {
     const ext  = (result.format === "PNG") ? "png" : "jpeg";
-    const mime = `image/${ext}`;
-    rightBox.innerHTML = `<span>المعالجة</span><img src="data:${mime};base64,${result.image}" alt="processed" />`;
+    const span = document.createElement("span");
+    span.textContent = "المعالجة";
+    const img = document.createElement("img");
+    img.src = `data:image/${ext};base64,${result.image}`;
+    img.alt = "processed";
+    rightBox.replaceChildren(span, img);
     statusEl.className  = "photo-card__status status-ok";
     statusEl.textContent = "✅ تمت المعالجة";
   } else {
@@ -278,5 +282,10 @@ downloadBtn.addEventListener("click", async () => {
 // Utilities
 // ---------------------------------------------------------------------------
 function escHtml(str) {
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
